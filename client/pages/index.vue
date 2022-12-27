@@ -2,46 +2,33 @@
   <div>
    <header>
     <div id="web-title">
-      <h1>Duberin | Manga Store</h1>
+      <h1>Duberin | Anime Store</h1>
     </div>
     <div id="web-bio">
-      <h2>The Best Manga Store for Enjoyer</h2>
+      <h2>The Best Anime Store for Enjoyer</h2>
     </div>
    </header>
    <section id="search-section">
     <div>
-      <h3>Searching Your Manga...</h3>
+      <h3>Searching Your Anime...</h3>
     </div>
     <div id="search-form">
       <Form>
-        <Input id="searchbox" v-model="searchManga" placeholder="Search Your Favorite Manga..." />
+        <Input id="searchbox" v-model="searchAnime" placeholder="Search Your Favorite Anime..." />
         <Button type="primary" icon="ios-search" @click="searchHandle">Search</Button>
       </Form>
     </div>
    </section>
    <section id="display-section">
-    <div v-for="manga in results" :key="manga.mal_id">
-      <div v-if="isLoaded">
-        <ul id="manga-list-section">
-          <li id="manga-list">
-            <Card :bordered="true">
-              <template #title>
-                <h3>{{ manga.title }}</h3>
-              </template>
-              <div>
-                <img :src="manga.images.jpg.image_url" :alt="manga.title" />
-              </div>
-              <div id="action-button">
-                <Button type="warning" :title="manga.title" @click="addToCart">Add to Cart</Button>
-                <Button type="primary" :title="manga.title" @click="addToWishlist">Wishlist</Button>
-              </div>
-            </Card>
-          </li>
-        </ul>
-      </div>
-      <div v-else>
-        <h2>Loading...</h2>
-      </div>
+    <div>
+      <Card style="width:100%">
+        <template #title>
+            Anime List
+        </template>
+        <p v-for="anime in results" :key="anime.mal_id">
+            <a :href="anime.url" target="_blank">{{ anime.title }}</a>
+        </p>
+    </Card>
     </div>
    </section>
   </div>
@@ -52,15 +39,17 @@
   export default {
     data() {
       return {
-        searchManga: "",
+        searchAnime: "",
         results: [],
         title: "Untitled",
-        isLoaded: false
+        isLoaded: false,
+        border: true,
+        hover: true
       }
     },
     methods: {
       searchHandle() {
-        const url = `https://api.jikan.moe/v4/anime?q=${this.searchManga}&sfw`;
+        const url = `https://api.jikan.moe/v4/anime?q=${this.searchAnime}&sfw`;
         axios.get(url)
           .then(res => {
             this.results = res.data.data;
@@ -82,7 +71,7 @@
 </script>
 
 <style lang="css" scoped>
-  header {
+  * {
     text-align: center;
   }
 
@@ -97,18 +86,18 @@
 
   #display-section {
     text-align: center;
+    display: grid;
+    grid-template: repeat(3, 1fr);
   }
 
   #manga-list-section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
   }
 
   #manga-list {
-    margin: 20px;
+    margin: 50px;
     padding: 10px;
-    width: 70%;
+    width: 30%;
+    cursor: pointer;
     border: 1px solid black;
-    text-align: center;
   }
 </style>

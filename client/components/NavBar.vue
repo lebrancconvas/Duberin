@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <Menu mode="horizontal" :theme="theme">
+    <Menu mode="horizontal">
       <NuxtLink to="/">
         <MenuItem>
           Duberin
@@ -25,12 +25,3 @@
   </div>
 </template>
 
-<script lang="js">
-  export default {
-
-  }
-</script>
-
-<style lang="css" scoped>
-
-</style>
