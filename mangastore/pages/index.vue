@@ -1,72 +1,87 @@
-<template>
-  <div class="container">
-    <div>
-      <NuxtLogo />
-      <h1 class="title">mangastore</h1>
-      <h2 class="subtitle">Welcome to the View UI + Nuxt.js template</h2>
-      <div class="links">
-        <Button
-          type="primary"
-          target="_blank"
-          rel="noopener noreferrer"
-          to="https://nuxtjs.org/"
-        >
-          Documentation
-        </Button>
-        <Button
-          target="_blank"
-          rel="noopener noreferrer"
-          to="https://github.com/nuxt/nuxt.js"
-        >
-          GitHub
-        </Button>
-        <Button
-          target="_blank"
-          rel="noopener noreferrer"
-          to="https://www.iviewui.com/"
-        >
-          View UI
-        </Button>
-      </div>
+<template lang="html">
+  <div>
+   <header>
+    <div id="web-title">
+      <h1>Duberin | Manga Store</h1>
     </div>
+    <div id="web-bio">
+      <h2>The Best Manga Store for Enjoyer</h2>
+    </div>
+   </header>
+   <section id="search-section">
+    <div>
+      <h3>Searching Your Manga...</h3>
+    </div>
+    <div id="search-form">
+      <Form>
+        <Input id="searchbox" v-model="searchManga" placeholder="Search Your Favorite Manga..." />
+        <Button type="primary" icon="ios-search" @click="searchHandle">Search</Button>
+      </Form>
+    </div>
+   </section>
+   <section id="display-section">
+    <div v-for="manga in results" :key="manga.mal_id">
+      <ul id="manga-list-section">
+        <li id="manga-list">
+          <h3>{{ manga.title }}</h3>
+          <div>
+            <img :src="manga.images.jpg.image_url" alt="manga image" />
+          </div>
+        </li>
+      </ul>
+    </div>
+   </section>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'IndexPage',
-}
+<script lang="js">
+  import axios from 'axios';
+  export default {
+    data() {
+      return {
+        searchManga: "",
+        results: []
+      }
+    },
+    methods: {
+      searchHandle() {
+        const url = `https://api.jikan.moe/v4/anime?q=${this.searchManga}&sfw`;
+        axios.get(url)
+          .then(res => {
+            this.results = res.data.data;
+          })
+          .catch(err => {
+            console.error(err);
+            console.log("[ERROR] API Fetching Error.");
+          })
+      }
+    }
+  }
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+<style lang="css" scoped>
+  header {
+    text-align: center;
+  }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
+  #search-section {
+    margin: 20px;
+    text-align: center;
+  }
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
+  #searchbox {
+    width: 30%;
+  }
 
-.links {
-  padding-top: 15px;
-}
+  #display-section {
+    text-align: center;
+  }
+
+  #manga-list-section {
+
+  }
+
+  #manga-list {
+    margin: 20px;
+  }
 </style>
