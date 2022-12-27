@@ -23,10 +23,18 @@
     <div v-for="manga in results" :key="manga.mal_id">
       <ul id="manga-list-section">
         <li id="manga-list">
-          <h3>{{ manga.title }}</h3>
-          <div>
-            <img :src="manga.images.jpg.image_url" alt="manga image" />
-          </div>
+          <Card :bordered="true">
+            <template #title>
+              <h3>{{ manga.title }}</h3>
+            </template>
+            <div>
+              <img :src="manga.images.jpg.image_url" :alt="manga.title" />
+            </div>
+            <div id="action-button">
+              <Button type="warning" @click="addToCart">Add to Cart</Button>
+              <Button type="primary" @click="addToWishlist">Wishlist</Button>
+            </div>
+          </Card>
         </li>
       </ul>
     </div>
@@ -54,6 +62,12 @@
             console.error(err);
             console.log("[ERROR] API Fetching Error.");
           })
+      },
+      addToCart() {
+        console.log(`Add to Cart.`);
+      },
+      addToWishlist() {
+        console.log(`Add to Wishlist.`);
       }
     }
   }
@@ -78,10 +92,15 @@
   }
 
   #manga-list-section {
-
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   #manga-list {
     margin: 20px;
+    padding: 10px;
+    width: 70%;
+    border: 1px solid black;
+    text-align: center;
   }
 </style>
