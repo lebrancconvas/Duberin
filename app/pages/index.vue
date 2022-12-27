@@ -1,11 +1,15 @@
 <template lang="html">
   <div>
-    <h1>Manga Shop</h1>
-    <h2>Search Your Favorite Manga...</h2>
-    <Form>
-      <Input id="searchbox" v-model="searchManga" placeholder="Search Your Favorite Manga..." />
-      <Button type="primary" @click="searchHandle">Search</Button>
-    </Form>
+    <header>
+      <h1>Manga Shop</h1>
+      <section id="search-section">
+        <h2>Search Your Favorite Manga...</h2>
+        <Form id="search-form">
+          <Input id="searchbox" v-model="searchManga" placeholder="Search Your Favorite Manga..." />
+          <Button type="primary" icon="ios-search" @click="searchHandle">Search</Button>
+        </Form>
+      </section>
+    </header>
     <div id="manga-list">
       <h2>List</h2>
       <div>
@@ -58,6 +62,7 @@
 
   #manga-list {
     text-align: center;
+    margin: 20px;
   }
 
   li {
