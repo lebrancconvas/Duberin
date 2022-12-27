@@ -21,22 +21,27 @@
    </section>
    <section id="display-section">
     <div v-for="manga in results" :key="manga.mal_id">
-      <ul id="manga-list-section">
-        <li id="manga-list">
-          <Card :bordered="true">
-            <template #title>
-              <h3>{{ manga.title }}</h3>
-            </template>
-            <div>
-              <img :src="manga.images.jpg.image_url" :alt="manga.title" />
-            </div>
-            <div id="action-button">
-              <Button type="warning" @click="addToCart">Add to Cart</Button>
-              <Button type="primary" @click="addToWishlist">Wishlist</Button>
-            </div>
-          </Card>
-        </li>
-      </ul>
+      <div v-if="isLoaded">
+        <ul id="manga-list-section">
+          <li id="manga-list">
+            <Card :bordered="true">
+              <template #title>
+                <h3>{{ manga.title }}</h3>
+              </template>
+              <div>
+                <img :src="manga.images.jpg.image_url" :alt="manga.title" />
+              </div>
+              <div id="action-button">
+                <Button type="warning" :title="manga.title" @click="addToCart">Add to Cart</Button>
+                <Button type="primary" :title="manga.title" @click="addToWishlist">Wishlist</Button>
+              </div>
+            </Card>
+          </li>
+        </ul>
+      </div>
+      <div v-else>
+        <h2>Loading...</h2>
+      </div>
     </div>
    </section>
   </div>
@@ -48,7 +53,9 @@
     data() {
       return {
         searchManga: "",
-        results: []
+        results: [],
+        title: "Untitled",
+        isLoaded: false
       }
     },
     methods: {
@@ -57,6 +64,7 @@
         axios.get(url)
           .then(res => {
             this.results = res.data.data;
+            this.isLoaded = true;
           })
           .catch(err => {
             console.error(err);
@@ -64,10 +72,10 @@
           })
       },
       addToCart() {
-        console.log(`Add to Cart.`);
+        console.log(`Add ${this.title} to Cart.`);
       },
       addToWishlist() {
-        console.log(`Add to Wishlist.`);
+        console.log(`Add ${this.title} to Wishlist.`);
       }
     }
   }
