@@ -1,6 +1,10 @@
 <template lang="html">
   <div>
-
+    <header>
+      <div>
+        <h1>Wishlist</h1>
+      </div>
+    </header>
   </div>
 </template>
 

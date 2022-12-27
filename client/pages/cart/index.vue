@@ -1,6 +1,10 @@
 <template lang="html">
   <div>
-
+    <header>
+      <div>
+        <h1>Cart</h1>
+      </div>
+    </header>
   </div>
 </template>
 
