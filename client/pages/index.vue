@@ -14,21 +14,32 @@
     </div>
     <div id="search-form">
       <Form>
-        <Input id="searchbox" v-model="searchAnime" placeholder="Search Your Favorite Anime..." />
+        <Input id="searchbox" v-model="searchAnime" placeholder="Search Your Favorite Anime..." @keypress.enter="searchHandle" />
         <Button type="primary" icon="ios-search" @click="searchHandle">Search</Button>
       </Form>
     </div>
    </section>
    <section id="display-section">
-    <div>
-      <Card style="width:100%">
+    <div v-for="anime in results" id="anime-list-section" :key="anime.mal_id" :title="anime.title">
+      <Card id="anime-list" style="width:300px">
         <template #title>
-            Anime List
+          <h3>
+            {{ anime.title }}
+          </h3>
         </template>
-        <p v-for="anime in results" :key="anime.mal_id">
-            <a :href="anime.url" target="_blank">{{ anime.title }}</a>
-        </p>
-    </Card>
+        <div>
+          <img :src="anime.images.jpg.image_url" :alt="anime.title" />
+        </div>
+        <div id="action">
+          <Button type="primary" @click="addToWishlist">Wishlist</Button>
+          <Button type="warning" @click="addToCart">Add to Cart</Button>
+          <div id="modal">
+            <Modal v-model="modal" title="Alert" @on-ok="ok" @on-cancel="cancel">
+              <p>Add to Cart Success !</p>
+            </Modal>
+          </div>
+        </div>
+      </Card>
     </div>
    </section>
   </div>
@@ -44,7 +55,8 @@
         title: "Untitled",
         isLoaded: false,
         border: true,
-        hover: true
+        hover: true,
+        modal: false
       }
     },
     methods: {
@@ -60,11 +72,16 @@
             console.log("[ERROR] API Fetching Error.");
           })
       },
-      addToCart() {
-        console.log(`Add ${this.title} to Cart.`);
+      ok() {
+        console.log("OK!");
+        this.modal = false;
       },
-      addToWishlist() {
-        console.log(`Add ${this.title} to Wishlist.`);
+      cancel() {
+        console.log("Cancel!");
+        this.modal = false;
+      },
+      addToCart() {
+        this.modal = true;
       }
     }
   }
@@ -86,18 +103,21 @@
 
   #display-section {
     text-align: center;
+  }
+
+  #anime-list-section {
     display: grid;
     grid-template: repeat(3, 1fr);
   }
 
-  #manga-list-section {
-  }
-
-  #manga-list {
-    margin: 50px;
+  #anime-list {
+    margin: 20px;
     padding: 10px;
-    width: 30%;
+    width: 50%;
     cursor: pointer;
     border: 1px solid black;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 1px 1px 1px 1px rgb(23, 21, 68);
   }
 </style>

@@ -6,8 +6,8 @@
       </div>
     </header>
     <section id="display-section">
-      <div>
-        <h2>Not Have any item...</h2> 
+      <div v-for="(item, index) in $store.state.carts" :key="index">
+        <h2>{{ item }}</h2>
       </div>
     </section>
   </div>
@@ -18,5 +18,7 @@
 </script>
 
 <style lang="css" scoped>
-
+  * {
+    text-align: center;
+  }
 </style>
